@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Websocket client</title>
+</head>
+<body>
+    <div id="message">Loading...</div>
+  <script type="application/javascript">
+    var ws = new WebSocket("ws://localhost:12345/ws");
+
+    ws.onmessage = function(msg) {
+      var div = document.getElementById("message");
+
+      div.innerHTML = msg.data;
+    };
+
+    ws.onopen = function(event) {
+      ws.send("start");
+
+      setTimeout(keepalive, 2500);
+    };
+
+    var keepalive = function() {
+      ws.send("ping");
+
+      setTimeout(keepalive, 2500);
+    }
+  </script>
+
+</body>
+</html>
